@@ -36,7 +36,7 @@ exports.getToursById = async (req, res) => {
         const tourId = req.params.id;
         const tour = await tourModel.findById(tourId)
         if (!tour) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: `Tour with this id is not found : ${tourId}`
             })
         }
@@ -52,7 +52,13 @@ exports.getToursById = async (req, res) => {
 
 exports.updateToursById = async (req, res) => {
     try {
-        const id = req.params.id
+        const tourId = req.params.id
+        const tour = await deviceModel.findById(tourId)
+        if (!tour) {
+            return res.status(404).json({
+                message: `Tour with this id is not found : ${tourId}`
+            })
+        }
         const reqBody = req.body
         const result = await tourModel.findByIdAndUpdate(id,reqBody, {
             new:true,
@@ -73,6 +79,12 @@ exports.updateToursById = async (req, res) => {
 exports.deleteToursById = async (req, res) => {
     try {
         const tourId = (req.params.id);
+        const tour = await deviceModel.findById(tourId)
+        if (!tour) {
+            return res.status(404).json({
+                message: `Tour with this id is not found : ${tourId}`
+            })
+        }
         const result = await tourModel.findByIdAndDelete(tourId)
         return res.status(200).json({
             data:result
